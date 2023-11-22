@@ -6,6 +6,7 @@ urlpatterns = [
     path('community/', views.community_list),
     path('community/<int:community_pk>/', views.community_detail),
     path('community/<int:community_pk>/like/', views.community_like),
+    path('community/<int:community_pk/like_count/', views.community_like_count),
 
     path('comments/', views.comment_list),
     path('comments/<int:comment_pk>/', views.comment_detail),
