@@ -129,6 +129,7 @@ def comment_like_count(request, comment_pk):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def reply_list(request):
     # comments = Comment.objects.all()
     replies = get_list_or_404(Reply)
@@ -137,6 +138,7 @@ def reply_list(request):
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def reply_detail(request, reply_pk):
     reply = get_object_or_404(Reply, pk=reply_pk)
     if request.method == 'GET':
