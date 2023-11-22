@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="headtitle">Movie Pedia</h1>
+    <h1 class="headtitle"> Movie Pedia</h1>
     
     <br><hr>
     <div class="movies-container">
@@ -65,6 +65,8 @@ const changePage = function(page) {
 
 onMounted(() => {
   searchVideo()
+  console.log()
+
 })
 
 const goToMovieDetail = function (movieId) {
