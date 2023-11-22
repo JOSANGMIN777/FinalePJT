@@ -6,9 +6,7 @@ class CommunityListSerializer(serializers.ModelSerializer):
     class UserCommunitySerializer(serializers.ModelSerializer):
         class Meta:
             model = get_user_model()
-
             fields = ('id', 'username', 'nickname', 'age')
-
     user = UserCommunitySerializer(read_only=True)
 
     class Meta:
@@ -20,9 +18,7 @@ class ReplySerializer(serializers.ModelSerializer):
     class UserReplySerializer(serializers.ModelSerializer):
         class Meta:
             model = get_user_model()
-
             fields = ('id', 'username', 'nickname', 'age')
-
     user = UserReplySerializer(read_only=True)
     
     class CommentReplySerializer(serializers.ModelSerializer):
@@ -42,9 +38,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class UserCommentSerializer(serializers.ModelSerializer):
         class Meta:
             model = get_user_model()
-
             fields = ('id', 'username', 'nickname', 'age')
-
     user = UserCommentSerializer(read_only=True)
     replies = ReplySerializer(many=True, read_only=True)
     replies_count = serializers.IntegerField(source='replies.count', read_only=True)
@@ -66,12 +60,10 @@ class CommunitySerializer(serializers.ModelSerializer):
     class UserCommunitySerializer(serializers.ModelSerializer):
         class Meta:
             model = get_user_model()
-
             fields = ('id', 'username', 'nickname', 'age')
 
     
     like_community_users = UserCommunitySerializer(many=True, read_only=True)
-
 
     user = UserCommunitySerializer(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
@@ -81,6 +73,7 @@ class CommunitySerializer(serializers.ModelSerializer):
         model = Community
         fields = '__all__'
         read_only_fields = ('user',)
+
 
 class CommunityLikeSerializer(serializers.ModelSerializer):
     class UserCommunitySerializer(serializers.ModelSerializer):
@@ -111,4 +104,3 @@ class ReplyLikeSerialzer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'like_reply_users_count', 'content')
-
