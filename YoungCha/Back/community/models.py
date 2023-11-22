@@ -11,7 +11,7 @@ class Community(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     like_community_users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='like_community', blank=True,
+        settings.AUTH_USER_MODEL, related_name='like_communitys', blank=True,
     )
 
 class Comment(models.Model):

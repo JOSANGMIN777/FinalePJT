@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@egjs/vue-flicking": "^4.11.1",
     "axios": "^1.6.2",
     "install": "^0.13.0",
     "pinia": "^2.1.7",

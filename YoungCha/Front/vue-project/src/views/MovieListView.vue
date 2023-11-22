@@ -43,6 +43,8 @@
       </div>
       
   <div>
+    <h1 class="headtitle"> Movie Pedia</h1>
+    
     <br><hr>
     <div class="movies-container">
       <div class="movie" v-for="video in videos" :key="video.id" :video="video">
@@ -110,7 +112,8 @@ const changePage = function(page) {
 
 onMounted(() => {
   searchVideo()
-  console.log(video.genres.id.includes(selectedCategory))
+  console.log()
+
 })
 
 const goToMovieDetail = function (movieId) {

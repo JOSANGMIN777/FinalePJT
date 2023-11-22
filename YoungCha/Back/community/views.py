@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import Count
-from django.http import JsonResponse
+
 
 from .serializers import *
 from .models import *
@@ -29,15 +29,24 @@ def community_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE', 'PUT'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def community_detail(request, community_pk):
     community = get_object_or_404(Community, pk=community_pk)
 
     if request.method == 'GET':
         serializer = CommunitySerializer(community)
-        print(serializer.data)
         return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        community.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    elif request.method == 'PUT':
+        serializer = CommunitySerializer(community, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
 
 
 
@@ -45,20 +54,28 @@ def community_detail(request, community_pk):
 @permission_classes([IsAuthenticated])
 def community_like(request, community_pk):
     community = get_object_or_404(Community, pk=community_pk)
+    serializer = CommunitySerializer(community)
+
     if community.like_community_users.filter(pk=request.user.pk).exists():
         community.like_community_users.remove(request.user)
+
     else:
         community.like_community_users.add(request.user)
     
-    serializer = CommunitySerializer(community)
 
-    like_status = {
-        'id': serializer.data.get('id'),
-        'count': community.like_community_users.count(),
-        'like_list': serializer.data.get('like_review_users'),
-    }
-    return JsonResponse(like_status)
+    return Response(serializer.data)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def community_like_count(request, community_pk):
+    communitys = Community.objects.annotate(
+        like_community_users_count = Count('like_community_users', distinct=True)
+    )
+
+    community = communitys.get(pk=community_pk)
+    serializer = CommunityLikeSerializer(community)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -105,15 +122,16 @@ def comment_create(request, community_pk):
 @permission_classes([IsAuthenticated])
 def comment_like(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
+    serializer = CommentSerializer(comment)
 
     if comment.like_comment_users.filter(pk=request.user.pk).exists():
         comment.like_comment_users.remove(request.user)
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data)
+    
     else:
         comment.like_comment_users.add(request.user)
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data)
+    
+    
+    return Response(serializer.data)
 
 
 @api_view(['GET'])

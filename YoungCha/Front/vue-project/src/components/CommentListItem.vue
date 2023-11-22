@@ -5,24 +5,24 @@
       좋아요 - {{ comment.like_comment_users.length }}
     </p>
       
-
-        <form @submit.prevent="deleteComment" class="sub">
-          <input type="submit" value="DELETE" class="delete">
-        </form>
-        <form @click="likeComment">
-          <input type="submit" value="❤" class="like">
-        </form>
-      
+    <form @submit.prevent="deleteComment">
+      <input type="submit" value="DELETE">
+    </form>
+    <form @click="likeComment">
+      <input type="submit" value="❤">
+    </form>
     <div>
       <ReplyCreate 
         :commentId="comment.id"
       />
+    
       <ReplyList 
         :commentId="comment.id"
       />
     </div>
-    <hr>
+    
   </div>
+
 </template>
 
 <script setup>
@@ -37,11 +37,11 @@ import { onMounted } from 'vue';
 //   communityId: Number,
 //   // commentId: Number,
 // })
-const { communityId, comment } = defineProps(['communityId', 'comment'])
 const store = useCounterStore()
 
 
 
+const { communityId, comment, community } = defineProps(['communityId', 'comment', 'community'])
 
 const deleteComment = () => {
   axios({
@@ -49,14 +49,17 @@ const deleteComment = () => {
     url: `${store.API_URL}/api/v1/comments/${comment.id}/`,
     headers: {
       Authorization: `Token ${store.token}`
-    }
+    },
   })
   .then((res) => {
     store.getCommunitys()
     store.getComments()
-    store.getReplies()
+
   })
-}
+  .catch((err) => {
+    console.log(err)
+  })
+};
 
 const likeComment = () => {
   axios({
@@ -67,9 +70,8 @@ const likeComment = () => {
     }
   })
   .then((res) => {
-    store.getCommunitys()
     store.getComments()
-    store.getReplies()
+    
   })
 }
 
