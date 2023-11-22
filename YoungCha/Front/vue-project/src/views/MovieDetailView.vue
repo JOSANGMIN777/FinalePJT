@@ -6,7 +6,7 @@
 
         <div id="title"><h1>{{ movieDetails.title }}</h1></div>
         <div  id="overview">{{ movieDetails.overview }}</div>
-
+        <p>{{ movieDetails }}</p>
         
         <div id="star" class="rating-box box w-100">
           <p id="point" style="margin-bottom: 0px;" class="">평점</p>
@@ -20,7 +20,7 @@
           <p  id="onecomment" style="margin-bottom: 0px;   margin-bottom: 10px; ;" class="">한줄평</p>
           <div id="oneline">
             <input type="text" v-model.trim="Comment" style="width: 70%;"> 
-            <input type="button" @click="saveRatingAndComment" value="작성">
+            <input type="button" @click="saveRatingAndComment" value="작성" class="commit">
           </div>
 
 
@@ -220,13 +220,13 @@ margin-bottom: 10px;
 .star {
 cursor: pointer;
 font-size: 40px;
-color: #eee;
+color:  rgb(100, 200, 150);
 margin-right: 5px;
 background-color: black;
 }
 
 .star:hover {
-color: #f82c60;
+color:  rgb(100, 200, 150)
 }
 #oneline {
 background-color: black;
@@ -237,10 +237,23 @@ margin-bottom: 15px;
 }
 
 .btn-go-back {
-margin-top: 100px;
+margin-top: 50px;
+margin-left: 44%;
+width : 200px;
+height: 45px;
+background-color: white;
+box-shadow: gray 4px 4px 0px;
+border-radius: 8px;
+transition: transform 200ms, box-shadow 200ms;
+margin-bottom: 30px;
+color: black;
+font-style: italic;
 }
 
-
+.btn-go-back:active{
+    transform: translateY(4px) translateX(4px);
+    box-shadow: gray 0px 0px 0px;
+  }
 .back {
   scale: 130%;
   margin-top: 12%;
@@ -248,4 +261,22 @@ margin-top: 100px;
 
 
 }
+
+.commit {
+background-color: white;
+box-shadow: gray 4px 4px 0px;
+border-radius: 8px;
+transition: transform 200ms, box-shadow 200ms;
+margin-bottom: 30px;
+color: black;
+font-style: italic;
+margin-left: 2px;
+width: 80px;
+height: 40px;
+}
+
+.commit:active{
+    transform: translateY(4px) translateX(4px);
+    box-shadow: gray 0px 0px 0px;
+  }
 </style>

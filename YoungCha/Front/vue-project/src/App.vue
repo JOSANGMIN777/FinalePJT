@@ -30,7 +30,23 @@
     
   </nav>
 
-<RouterView />
+  <RouterView />
+  <footer>
+    <h4>Copyright ⓒ 2023 YOUNGcha Inc.</h4>
+    <p>서비스 이용약관 | 커뮤니티 이용약관 | 개인정보 처리방침 | 법적고지 | 사이트 맵 | 고객센터 | 채용정보 </p>
+    <p>주식회사 영차 | 서울특별시 서초구 강남대로 343 신덕빌딩 3층 |
+사업자등록번호 211-88-66013 | 통신판매업 신고번호 제 2019-서울서초-0965호 |
+호스팅 서비스 제공자 아마존웹서비시즈코리아 유한회사</p>
+    
+    <p>All Rights Reserved.</p>
+    <br>
+    <img src="@/assets/app2.PNG" alt="app"  >
+    <img src="@/assets/apple2.PNG" alt="apple" >
+    
+    
+    
+    
+  </footer>
 </template>
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
@@ -157,4 +173,10 @@ hr {
  border: solid rgb(24, 253, 138) 4px ; 
 }
 
+footer {
+
+  text-align: center;
+  margin-top: 100px;
+  
+}
 </style>

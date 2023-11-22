@@ -1,14 +1,19 @@
 <template>
   <div>
+    작성자 :
     <RouterLink :to="{name: 'profile', params:{ nickname: community.user.nickname }}">
-      <h4>{{ community.user.nickname }}</h4>
+    
+      <button class="username">
+        {{ community.user.nickname }}
+
+      </button>
     </RouterLink>
     <h5>{{ community.id }}</h5>
     <p>{{ community.title }}</p>
     <p>{{ community.content }}</p>
-    <p>{{ community }}</p>
+    
     <RouterLink :to="{ name: 'CommunityDetailView', params: { id: community.id }}">
-      [Detail]
+      <button class="detail">DETAIL</button>
     </RouterLink>
     <hr>
   </div>
@@ -32,4 +37,29 @@ const like_community = () => {
     }
   })
 }
+
+
 </script>
+<style scoped>
+.detail {
+margin: 5px;
+background-color: white;
+box-shadow: gray 4px 4px 0px;
+border-radius: 8px;
+transition: transform 200ms, box-shadow 200ms;
+margin-bottom: 30px;
+color: black;
+font-style: italic;
+}
+
+.username {
+  margin: 5px;
+  background-color: white;
+box-shadow: gray 4px 4px 0px;
+border-radius: 8px;
+transition: transform 200ms, box-shadow 200ms;
+margin-bottom: 30px;
+color: black;
+font-style: italic;
+}
+</style>

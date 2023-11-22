@@ -2,8 +2,8 @@
   <div>
     <h1>Community Page</h1>
     <RouterLink :to="{ name: 'CommunityCreateView' }">
-      [CREATE]
-    </RouterLink>
+      <button class="create">CREATE</button>
+    </RouterLink>    
     <CommunityList />
   </div>
 </template>
@@ -23,6 +23,18 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped>
+  .create {
+margin-left: 5px;
+background-color: white;
+box-shadow: gray 4px 4px 0px;
+border-radius: 8px;
+transition: transform 200ms, box-shadow 200ms;
+margin-bottom: 30px;
+color: black;
+font-style: italic;
+width: 6%;
+  }
 
+  
 </style>

@@ -5,12 +5,14 @@
       좋아요 - {{ comment.like_comment_users.length }}
     </p>
       
-    <form @submit.prevent="deleteComment">
-      <input type="submit" value="DELETE">
-    </form>
-    <form @click="likeComment">
-      <input type="submit" value="❤">
-    </form>
+
+        <form @submit.prevent="deleteComment" class="sub">
+          <input type="submit" value="DELETE" class="delete">
+        </form>
+        <form @click="likeComment">
+          <input type="submit" value="❤" class="like">
+        </form>
+      
     <div>
       <ReplyCreate 
         :commentId="comment.id"
@@ -39,9 +41,7 @@ const { communityId, comment } = defineProps(['communityId', 'comment'])
 const store = useCounterStore()
 
 
-onMounted(
-  console.log(comment)
-)
+
 
 const deleteComment = () => {
   axios({
@@ -76,5 +76,6 @@ const likeComment = () => {
 </script>
 
 <style scoped>
+
 
 </style>
