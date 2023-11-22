@@ -11,7 +11,7 @@ class Community(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     like_community_users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='like_community', blank=True
+        settings.AUTH_USER_MODEL, related_name='like_community', blank=True,
     )
 
 class Comment(models.Model):
@@ -23,7 +23,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     like_comment_users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='like_comments', blank=True
+        settings.AUTH_USER_MODEL, related_name='like_comments', blank=True,
     )
 
 class Reply(models.Model):
@@ -35,5 +35,5 @@ class Reply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     like_reply_users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='like_replies', blank=True
+        settings.AUTH_USER_MODEL, related_name='like_replies', blank=True,
     )

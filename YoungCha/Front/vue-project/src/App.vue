@@ -12,27 +12,26 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'SignUpView'}">SignUp&nbsp;&nbsp;</RouterLink>
 
-
     <RouterLink style="font-size: 24px;" :to="{ name: 'LogInView'}">LogIn&nbsp;&nbsp;</RouterLink>
   </nav>
   <nav v-if="store.isLogIn">
     <RouterLink :to="{ name: 'home' }">
-    <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
+      <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
-    <h2 class="logo-text">YOUNGcha</h2>
-    <RouterLink style="font-size: 24px;" :to="{ name: 'movies' }">Movie List&nbsp;&nbsp;</RouterLink> 
-    
-    <RouterLink style="font-size: 24px;" :to="{ name: 'Search' }">Movie Serach&nbsp;&nbsp;</RouterLink>
-    <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
+      <h2 class="logo-text">YOUNGcha</h2>
+    <RouterLink style="font-size: 24px;" :to="{ name: 'movies' }">Movie List  </RouterLink> 
+
+    <RouterLink style="font-size: 24px;" :to="{ name: 'Search' }">Movie Serach  </RouterLink>
+    <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community  </RouterLink>
 
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
-    <!-- <RouterLink style="font-size: 24px;" :to="{name: 'profile'}">Profile&nbsp;&nbsp;</RouterLink> -->
 
-    <a @click.prevent="logOut" href="#" style="font-size: 24px;">
+    <RouterLink style="font-size: 24px" @click.prevent="logOut" :to="{ name: 'home'}">LogOut</RouterLink>
+    <!-- <a @click="logOut" href="#" style="font-size: 24px;">
       LogOut
-    </a>
-    <p>{{ store.loginUser.nickname }}</p>
-
+    </a> -->
+    
+    
   </nav>
 
 <RouterView />
@@ -43,12 +42,13 @@ import { useCounterStore } from '@/stores/counter';
 import { onMounted, ref } from 'vue';
 import axios from 'axios'
 
-
 const store = useCounterStore()
 const TMDB_KEY = import.meta.env.VITE_TMDB_KEY 
-const page = ref(1);
 
-
+onMounted(() => {
+  // store.isUser()
+  // console.log(store.loginUser)
+})
 
 const logOut = () => {
     axios({
