@@ -1,12 +1,16 @@
 <template>
     <div v-if="commentId === reply.comment.id">
-        <p>{{ reply.user.nickname }} - {{ reply.content }}</p>
-        <p>좋아요 - {{ reply.like_reply_users.length }}</p>
-    </div>
-
-    <form @click.prevent="likeReply">
+      <p>{{ reply.user.nickname }} - {{ reply.content }}</p>
+      <p>좋아요 - {{ reply.like_reply_users.length }}</p>
+      <form @submit.prevent="deleteReply">
+        <input type="submit" value="REPLY DELETE">
+      </form>
+      <form @submit.prevent="likeReply">
         <input type="submit" value="❤">
-    </form>
+      </form>
+    </div>
+    
+
 </template>
 
 <script setup>
@@ -22,10 +26,22 @@ import axios from 'axios';
 const store = useCounterStore()
 const { reply, commentId } = defineProps(['reply', 'commentId'])
 
-
-onMounted(
-  console.log(reply)
-)
+const deleteReply = () => {
+  axios({
+    method: 'delete',
+    url: `${store.API_URL}/api/v1/reply/${reply.id}/`,
+    headers: {
+      Authorization: `Token ${store.token}`
+    },
+  })
+  .then((res) => {
+    store.getComments()
+    store.getReplies()
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+};
 
 
 const likeReply = () => {

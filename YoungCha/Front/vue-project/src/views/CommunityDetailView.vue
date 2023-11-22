@@ -6,7 +6,7 @@
       <p>내용 : {{ community.content }}</p>
       <p>작성일 : {{ community.created_at }}</p>
       <p>수정일 : {{ community.updated_at }}</p>
-      <p>댓글 수 : {{ community.comment_count }}</p>
+      <p>댓글 수 : {{ community.comments.length }}</p>
       <hr>
       <div>
         <CommentCreate 
@@ -15,6 +15,7 @@
         <hr>
         <CommentList 
           :communityId="community.id"
+          :community="community"
         />
       </div>
     </div>
@@ -35,6 +36,7 @@ const route = useRoute()
 const community = ref(null)
 
 onMounted(() => {
+  store.getCommunitys()
   store.getComments()
   store.getReplies()
 
@@ -45,7 +47,6 @@ onMounted(() => {
     .then((res) => {
       // console.log(res.data)
       community.value = res.data
-      store.getCommunitys()
     })
     .catch((err) => {
       console.log(err)
