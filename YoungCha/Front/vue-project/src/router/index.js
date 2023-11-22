@@ -12,7 +12,7 @@ import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
 import MovieComments from '@/views/MovieComments.vue'
 import Profile from '@/views/Profile.vue'
-
+import AccountView from '@/views/AccountView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -77,6 +77,11 @@ const router = createRouter({
   path: '/profile/:nickname/',
   name: 'profile',
   component: Profile,
+ },
+ {
+  path: '/account/:username/',
+  name: 'account',
+  component: AccountView,
  }
 
   ]
@@ -88,5 +93,6 @@ router.beforeEach((to, from) => {
     return { name: 'home'}
   }
 })
+
 
 export default router

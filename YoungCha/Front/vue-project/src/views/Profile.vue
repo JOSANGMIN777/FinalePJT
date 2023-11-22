@@ -1,8 +1,10 @@
 <template>
     <div>
+
         <h1>{{ route.params.nickname }}의 Profile</h1>
+
     </div>
-</template>
+<CommentListItem/></template>
 
 <script setup>
 import { onMounted } from 'vue';
@@ -16,5 +18,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
 
 </style>
