@@ -1,11 +1,8 @@
 <template>
   <div>
-
     <RouterLink :to="{name: 'profile', params:{ nickname: community.user.nickname }}">
       <h4>{{ community.user.nickname }}</h4>
     </RouterLink>
-    
-
     <h5>{{ community.id }}</h5>
     <p>{{ community.title }}</p>
     <p>{{ community.content }}</p>
