@@ -21,6 +21,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: store.loginUser.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
+    <RouterLink style="font-size: 24px;" :to="{ name: 'account', params: {username: store.loginUser.username}}">Account&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px" @click.prevent="logOut" :to="{ name: 'home'}">LogOut&nbsp;&nbsp;</RouterLink>
     <!-- <a @click="logOut" href="#" style="font-size: 24px;">
       LogOut

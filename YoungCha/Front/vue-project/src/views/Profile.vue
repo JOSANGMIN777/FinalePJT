@@ -1,13 +1,14 @@
 <template>
     <div>
-        <h1>Profile</h1>
+        <h1>유저 프로필</h1>
     </div>
-</template>
+<CommentListItem/></template>
 
 <script setup>
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
 
 </style>
