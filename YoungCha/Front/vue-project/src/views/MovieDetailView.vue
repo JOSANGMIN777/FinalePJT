@@ -1,23 +1,20 @@
 <template>
   <div class="container" style="">
-    <div class="row">
+    <div v-if="isBigScreen" class="row">
       <img  class="box col-4" v-if="movieDetails.poster_path" :src="`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`" alt="포스터" >
       <div class="box position-relative col-8" style="font-size: 16px;">
 
         <div id="title"><h1>{{ movieDetails.title }}</h1></div>
         <div  id="overview">{{ movieDetails.overview }}</div>
-        <p>{{ movieDetails }}</p>
         
         <div id="star" class="rating-box box w-100">
-          <p id="point" style="margin-bottom: 0px;" class="">평점</p>
+          <!-- <p id="point" style="margin-bottom: 0px;" class="">나의 평가</p> -->
           <div class="star-container">
             <div v-for="star in 5" :key="star" class="star" @mouseover="hoverStar(star)" @mouseleave="resetStars" @click="setRating(star)">
               {{ star <= tempRating  ? '★' : '☆' }}
             </div>
 
-          <!-- 코멘트 입력 -->
           </div>
-          <p  id="onecomment" style="margin-bottom: 0px;   margin-bottom: 10px; ;" class="">한줄평</p>
           <div id="oneline">
             <input type="text" v-model.trim="Comment" style="width: 70%;"> 
             <input type="button" @click="saveRatingAndComment" value="작성" class="commit">
@@ -27,6 +24,31 @@
         </div>
       
       </div>  
+    </div>  
+    <div v-if="isSmallScreen" class="row">
+      <img  class="box col-12" v-if="movieDetails.poster_path" :src="`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`" alt="포스터" >
+      <div id="underbox" class="box position-relative col-12" style="font-size: 16px;">
+
+        <div id="title"><h1>{{ movieDetails.title }}</h1></div>
+        <div  id="overview">{{ movieDetails.overview }}</div>
+        
+        <div id="star" class="rating-box box w-100">
+          <p id="point" style="margin-bottom: 0px;" class="">나의 평가</p>
+          <div class="star-container">
+            <div v-for="star in 5" :key="star" class="star" @mouseover="hoverStar(star)" @mouseleave="resetStars" @click="setRating(star)">
+              {{ star <= tempRating  ? '★' : '☆' }}
+            </div>
+
+          </div>
+          <div id="oneline">
+            <input type="text" v-model.trim="Comment" style="width: 70%;"> 
+            <input type="button" @click="saveRatingAndComment" value="작성" class="commit">
+          </div>
+
+
+        </div>
+      
+      </div>   
     </div>
   </div>
   <br>
@@ -56,7 +78,6 @@ import MovieComments from '@/views/MovieComments.vue';
 import { useCounterStore } from '@/stores/counter';
 
 const movieDetails = ref({});
-const isSmallScreen = ref(false);
 const route = useRoute();
 const router = useRouter();
 const userRating = ref(0);
@@ -64,6 +85,8 @@ const tempRating = ref(0);
 const currentPage = ref(1);
 const { movieId, page } = defineProps(['movieId', 'page'])
 const store = useCounterStore()
+const isBigScreen = ref(window.innerWidth >= 1000);
+const isSmallScreen = ref(window.innerWidth < 1000);
 
 const Comment = ref('');
 
@@ -81,15 +104,19 @@ const trackPage = () => {
 
 
 const checkScreenSize = () => {
-  isSmallScreen.value = window.innerWidth <= 768; // Adjust the breakpoint as needed
+  isBigScreen.value = window.innerWidth >= 1000;
+  isSmallScreen.value = window.innerWidth < 1000; // Adjust the breakpoint as needed
+ // Adjust the breakpoint as needed
 };
 
 onMounted(() => {
   
+const isBigScreen = ref(window.innerWidth >= 1000);
+const isSmallScreen = ref(window.innerWidth < 1000);
 
 checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
-});
+}); 
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', checkScreenSize);
@@ -97,16 +124,23 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
 trackPage();
-window.addEventListener('popstate', trackPage); // 뒤로 가기 버튼을 클릭할 때마다 페이지 추적
+window.addEventListener('popstate', trackPage); 
 });
 
 onBeforeUnmount(() => {
-window.removeEventListener('popstate', trackPage); // 컴포넌트가 제거되기 전에 이벤트 리스너 제거
+window.removeEventListener('popstate', trackPage); 
 });
 
+onMounted(() => {
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkScreenSize);
+});
 const setRating = (rating) => {
 userRating.value = rating;
-// 여기서 별점을 저장하거나 다른 동작을 수행할 수 있습니다.
 };
 
 
@@ -133,17 +167,11 @@ const saveRatingAndComment = () => {
 
 .then(response => {
   console.log(response.data);
-  router.push({ name: 'HomeView' }); // 변경: home 대신 실제 홈 화면의 이름을 사용
-
-  // 성공적으로 저장한 후 추가 작업 수행
-
-  // 예를 들어, 성공 메시지를 표시하거나 페이지를 새로고침하는 등의 작업 수행
+  router.push({ name: 'HomeView' }); 
 
 })
 .catch(error => {
   console.error('평점 및 코멘트 저장 중 에러 발생:', error);
-
-  // 저장 실패 시 사용자에게 알림 또는 다른 작업 수행
 
 });
 };
@@ -172,12 +200,12 @@ const saveRatingAndComment = () => {
 </script>
 
 <style scoped>
-/* 필요한 스타일링을 추가 */
 .container {
   text-align: center; 
   background-color: black; 
   height:200%; 
   color: whitesmoke;
+  
 }
 .box {
   border: 1px solid whitesmoke;
@@ -207,12 +235,13 @@ const saveRatingAndComment = () => {
 #overview {
   background-color: black;
   padding: 40px;
+  font-size: 14px;
 
 }
 .star-container {
 display: flex;
-justify-content: center; /* 가로 가운데 정렬 */
-align-items: center; /* 세로 가운데 정렬 */
+justify-content: center; 
+align-items: center; 
 background-color: black;
 margin-bottom: 10px;
 }
@@ -279,4 +308,8 @@ height: 40px;
     transform: translateY(4px) translateX(4px);
     box-shadow: gray 0px 0px 0px;
   }
+
+#underbox {
+  height: 800px;
+}
 </style>
