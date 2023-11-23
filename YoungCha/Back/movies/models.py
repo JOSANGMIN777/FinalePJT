@@ -42,16 +42,27 @@ class Movie(models.Model):
     vote_average = models.FloatField(null=True, blank=True)
     vote_count = models.IntegerField(null=True, blank=True)
     poster_path = models.CharField(max_length=200, null=True, blank=True)
-    genres = models.ManyToManyField(Genre)
+    genre_check = models.ManyToManyField(Genre, related_name='genre_movies')
     video = models.CharField(max_length=200, null=True, blank=True)
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='like_movies', blank=True,
     )
 
     
-
-
 class Rate(models.Model):
     rate_user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='user_rated')
     rate_movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rate_score = models.FloatField()
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='movie_user'
+    )
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_comments')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='like_movie_comments', blank=True,
+    )
