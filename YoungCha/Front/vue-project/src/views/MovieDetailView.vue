@@ -6,7 +6,7 @@
 
         <div id="title"><h1>{{ movieDetails.title }}</h1></div>
         <div  id="overview">{{ movieDetails.overview }}</div>
-        
+        <p v-for="rating in ratings">{{ rating.rate_score }}</p>
         <div id="star" class="rating-box box w-100">
           <!-- <p id="point" style="margin-bottom: 0px;" class="">나의 평가</p> -->
           <div class="star-container">
@@ -19,10 +19,7 @@
             <input type="text" v-model.trim="Comment" style="width: 70%;"> 
             <input type="button" @click="saveRatingAndComment" value="작성" class="commit">
           </div>
-
-
-        </div>
-      
+        </div> 
       </div>  
     </div>  
     <div v-if="isSmallScreen" class="row">
@@ -44,10 +41,10 @@
             <input type="text" v-model.trim="Comment" style="width: 70%;"> 
             <input type="button" @click="saveRatingAndComment" value="작성" class="commit">
           </div>
-
+          
 
         </div>
-      
+        
       </div>   
     </div>
   </div>
@@ -87,11 +84,19 @@ const { movieId, page } = defineProps(['movieId', 'page'])
 const store = useCounterStore()
 const isBigScreen = ref(window.innerWidth >= 1000);
 const isSmallScreen = ref(window.innerWidth < 1000);
-
+const ratings = ref([]);
+const comments = ref([]);
 const Comment = ref('');
 
-
 const token = import.meta.env.VITE_TMDB_TOKEN
+
+
+
+onMounted(() => {
+  getRatingsAndComments();
+});
+
+
 const trackPage = () => {
   const query = router.currentRoute.value;
 }
@@ -105,12 +110,12 @@ const trackPage = () => {
 
 const checkScreenSize = () => {
   isBigScreen.value = window.innerWidth >= 1000;
-  isSmallScreen.value = window.innerWidth < 1000; // Adjust the breakpoint as needed
- // Adjust the breakpoint as needed
+  isSmallScreen.value = window.innerWidth < 1000; 
 };
 
 onMounted(() => {
-  
+
+
 const isBigScreen = ref(window.innerWidth >= 1000);
 const isSmallScreen = ref(window.innerWidth < 1000);
 
@@ -139,6 +144,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', checkScreenSize);
 });
+
 const setRating = (rating) => {
 userRating.value = rating;
 };
@@ -152,31 +158,64 @@ const resetStars = () => {
 tempRating.value = userRating.value;
 };
 
+
 const saveRatingAndComment = () => {
+  // console.log(store.token)
+//   axios
+//     .post(`${store.API_URL}/movies/saveRatingAndComment/${route.params.movieId}/`, {
+//       data : {rating: userRating.value, comment: Comment.value}}, 
+      
+//       headers: {
+//         Authorization: `Token ${store.token}`,
+        
+//       },
+//     )
+//     .then(response => {
+//       console.log(response.data);
+//       router.push({ name: 'HomeView' });
+//     })
+//     .catch(error => {
+//       console.error('평점 및 코멘트 저장 중 에러 발생:', error);
+//     });
+
   axios({
     method: 'post',
     url: `${store.API_URL}/movies/saveRatingAndComment/${route.params.movieId}/`,
-    data: {
+    data:{
       rating: userRating.value,
-     comment: Comment.value
+      comment: Comment.value,
     },
-    headers: {
-       Authorization: `Token ${store.token}`
-     }
-   })
-
-.then(response => {
-  console.log(response.data);
-  router.push({ name: 'HomeView' }); 
-
-})
-.catch(error => {
-  console.error('평점 및 코멘트 저장 중 에러 발생:', error);
-
-});
+    headers:{
+      Authorization: `Token ${store.token}`,
+    }
+  })
+  .then(response => {
+      console.log(response.data);
+      router.push({ name: 'home' });
+    })
+    .catch(error => {
+      console.error('평점 및 코멘트 저장 중 에러 발생:', error);
+    })
 };
 
-
+const getRatingsAndComments = () => {
+  axios({
+    method: 'get',
+    url: `${store.API_URL}/movies/getRatingsAndComments/${route.params.movieId}/`,
+    headers: {
+      Authorization: `Token ${store.token}`,
+    }
+  })
+  .then(response => {
+    console.log(response.data);
+    // 서버에서 받은 데이터를 store에 저장할 수 있습니다.
+    ratings.value = response.data.rates;
+    comments.value = response.data.comments;
+  })
+  .catch(error => {
+    console.error('평점 및 코멘트 조회 중 에러 발생:', error);
+  });
+};
 
 
 

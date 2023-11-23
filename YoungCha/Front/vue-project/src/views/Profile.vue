@@ -5,7 +5,7 @@
     <img src="@/assets/user.jpg" alt="usericon" class="usericon">
     <br>
     <button> 
-        <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.username}}" >개인정보수정</RouterLink>
+        <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.nickname}}" >개인정보수정</RouterLink>
     </button>
      <br>
      <br>
@@ -53,10 +53,6 @@ const filterCommunityLength = computed(() => {
 
 
 
-
-onMounted(() => {
-   
-})
 </script>
 
 <style scoped>

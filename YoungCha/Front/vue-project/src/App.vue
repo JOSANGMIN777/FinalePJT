@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="!store.isLogIn" style="border: 4px solid white;"  >
+  <nav v-if="!store.isLogIn" style="border-bottom: 4px solid white; border-top: 4px solid white : ;"   >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -11,7 +11,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'SignUpView'}">SignUp&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'LogInView'}">LogIn&nbsp;&nbsp;</RouterLink>
   </nav>
-  <nav v-if="store.isLogIn"  style="border: 4px solid white;"  >
+  <nav v-if="store.isLogIn"  style="border-bottom: 4px solid white; border-top: 4px solid white : ;"  >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -20,7 +20,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'Search' }">Movie Serach&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
-    <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: users.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
+    <RouterLink v-if="store.token !== null" style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: users.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
     
     <RouterLink style="font-size: 24px;" @click.prevent="logOut" :to="{ name: 'home'}">LogOut&nbsp;&nbsp;</RouterLink>
     <!-- <a @click="logOut" href="#" style="font-size: 24px;">
