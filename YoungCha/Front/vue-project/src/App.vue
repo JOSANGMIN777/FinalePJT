@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="!store.isLogIn" style="border: 4px solid white;" >
+  <nav v-if="!store.isLogIn" style="border: 4px solid white;"  >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -11,7 +11,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'SignUpView'}">SignUp&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'LogInView'}">LogIn&nbsp;&nbsp;</RouterLink>
   </nav>
-  <nav v-if="store.isLogIn"  style="border: 4px solid white;" >
+  <nav v-if="store.isLogIn"  style="border: 4px solid white;"  >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -224,6 +224,8 @@ footer {
   left: 30%;
 
 }
+
+
  
 
 </style>

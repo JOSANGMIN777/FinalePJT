@@ -4,17 +4,16 @@
 <!-- <button class="cta" @click="setCategory(null)">전체</button>
 <button class="cta" @click="setCategory(12)">모험</button>
 <button class="cta" @click="setCategory(14)">판타지</button>
- -->
+-->
 
-    <div>
-        <div class="drop d-flex justify-content-evenly align-items-center" style="font-weight:bold; margin-top:20px; margin-bottom:20px; border: 1px solid white; background-color: white;">
-          <button class="cta" @click="sortBtn(1, '인기순')">인기순</button>
-          <button class="cta" @click="sortBtn(2, '최신순')">최신순</button>
-          <button class="cta" @click="sortBtn(3, '개봉 예정순')">개봉 예정순</button>
-          <button class="cta" @click="sortBtn(4, '리뷰 많은순')">리뷰 많은순</button>
-          <button class="cta " @click="sortBtn(5, '평점순')">평점순</button>
+<div>
+  <div class="drop d-flex justify-content-end ">
+    <h1 class="headtitle" style="margin-right: 150px;"> Movie Pedia</h1>
+          <button class="cta" style="padding-right: 200px;" @click="sortBtn(1, '인기순')">인기순</button>
+          <button class="cta" style="padding-right: 200px;" @click="sortBtn(2, '최신순')">최신순</button>
+          <button class="cta " style="padding-right: 200px;" @click="sortBtn(5, '평점순')">평점순</button>
           <div class="btn-group">
-            <button type="button" class="dropdown-toggle cta" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" style="padding-right: 200px;" class="dropdown-toggle cta" data-bs-toggle="dropdown" aria-expanded="false">
               장르순
             </button>
             <ul style="border: 2px solid  rgb(62, 172, 62);" class="dropdown-menu">
@@ -43,7 +42,6 @@
       </div>
       
   <div>
-    <h1 class="headtitle"> Movie Pedia</h1>
     
     <br><hr>
     <div class="movies-container">
@@ -68,21 +66,28 @@ import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
+
+const selectedGenre = ref(null)
+
 const router = useRouter()
 const page = ref(1);
-
 const token = import.meta.env.VITE_TMDB_TOKEN
-
-
 const videos = ref([])
 const currentPage = ref(1)
 const totalPages = ref(1)
+
+// const sortBtnGenre = (genreId, genreName) => {
+//   console.log(`장르 선택: ${ genreName}`);
+//   selectedGenre.value = genreId;
+// };
+
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   })
 }
+
 const searchVideo = function(page = 1) {
   const url = `https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=${page}`
   const options = {
@@ -149,6 +154,8 @@ const displayedPages = computed(() => {
 .movie {
   text-align: center;
   max-width: 100%;
+  cursor: pointer;
+
   
 }
 
@@ -229,7 +236,7 @@ width: 4%;
 
 .headtitle{
   letter-spacing: 0px;
-  background: linear-gradient(45deg, rgb(62, 172, 62), white, rgb(62, 172, 62), white);
+  background: linear-gradient(45deg, rgba(6, 63, 35), white, rgb(62, 172, 62), white);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -262,5 +269,28 @@ width: 4%;
     transition: color 0.5s;
 }
 
+.drop {
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0);
+  font-weight:bold; 
+  margin-top:20px; 
+  margin-bottom:1px;
+  border-bottom: solid 2px white;
+  border-top: solid 2px white;
+  height: 110px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+  
+  
+  
+  
+}
+
+.drop button {
+  padding-right: 400px;
+}
 
 </style>

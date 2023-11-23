@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <h1>{{ route.params.nickname }}님의 프로필</h1>
-    <img src="" alt="">
+  <div style="margin-left: 30%; margin-top: 5%; margin-right: 25%; margin-bottom: 300px;" >
+    <h1 style="color: rgb(50, 150, 80) ;">{{ route.params.nickname }}님의 프로필</h1>
+    <br>
+    <img src="@/assets/user.jpg" alt="usericon" class="usericon">
+   
+     <br>
      <br>
     게시글 수 : {{ filterCommunityLength }}
      
@@ -52,6 +55,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
+.usericon {
+  width: 150px;
+  border-radius: 30%;
+  border: 5px solid rgb(50, 150, 80);
+}
 
 </style>
