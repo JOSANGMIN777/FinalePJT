@@ -1,4 +1,6 @@
 <template>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
   <div class="container" style="">
     <div v-if="isBigScreen" class="row">
       <img  class="box col-4" v-if="movieDetails.poster_path" :src="`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`" alt="포스터" >
@@ -6,7 +8,9 @@
 
         <div id="title"><h1>{{ movieDetails.title }}</h1></div>
         <div  id="overview">{{ movieDetails.overview }}</div>
-        <p v-for="rating in ratings">{{ rating.rate_score }}</p>
+
+        
+
         <div id="star" class="rating-box box w-100">
           <!-- <p id="point" style="margin-bottom: 0px;" class="">나의 평가</p> -->
           <div class="star-container">
@@ -49,6 +53,24 @@
     </div>
   </div>
   <br>
+  <div id="commentbox" class="container">
+    <div class="box row" v-for="(comment, index) in comments" :key="comment.id">
+        <div class="col-md-3">
+            <!-- Display stars based on rate_score -->
+            <span v-for="i in ratings[index].rate_score" :key="i" class="fas fa-star text-warning"></span>
+            <span v-for="i in 5 - ratings[index].rate_score" :key="i" class="far fa-star text-warning"></span>
+        </div>
+        <div class="col-md-3">
+            {{ comment.user.nickname }}
+        </div>
+        <div class="col-md-6">
+            {{ comment.content }}
+        </div>
+    </div>
+</div>
+
+
+
   <RouterLink 
     :to="{name: 'movies'}"
     :page="page"
@@ -59,7 +81,7 @@
 
 
 
-  <RecommendedView/>
+  <!-- <RecommendedView/> -->
 
   <MovieComments/>
   
@@ -160,42 +182,25 @@ tempRating.value = userRating.value;
 
 
 const saveRatingAndComment = () => {
-  // console.log(store.token)
-//   axios
-//     .post(`${store.API_URL}/movies/saveRatingAndComment/${route.params.movieId}/`, {
-//       data : {rating: userRating.value, comment: Comment.value}}, 
-      
-//       headers: {
-//         Authorization: `Token ${store.token}`,
-        
-//       },
-//     )
-//     .then(response => {
-//       console.log(response.data);
-//       router.push({ name: 'HomeView' });
-//     })
-//     .catch(error => {
-//       console.error('평점 및 코멘트 저장 중 에러 발생:', error);
-//     });
-
   axios({
     method: 'post',
     url: `${store.API_URL}/movies/saveRatingAndComment/${route.params.movieId}/`,
-    data:{
+    data: {
       rating: userRating.value,
       comment: Comment.value,
     },
-    headers:{
+    headers: {
       Authorization: `Token ${store.token}`,
-    }
+    },
   })
-  .then(response => {
+    .then(response => {
       console.log(response.data);
-      router.push({ name: 'home' });
+      // 코멘트를 제출하고 나면 페이지를 새로고침합니다.
+      router.go(0);
     })
     .catch(error => {
       console.error('평점 및 코멘트 저장 중 에러 발생:', error);
-    })
+    });
 };
 
 const getRatingsAndComments = () => {
@@ -350,5 +355,11 @@ height: 40px;
 
 #underbox {
   height: 800px;
+}
+
+#commentbox {
+  font-size: 20px;
+  /* border: solid 1px white; */
+  text-align: left;
 }
 </style>

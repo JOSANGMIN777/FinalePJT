@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import *
@@ -13,6 +13,7 @@ from django.db.models import Count
 import random
 import requests
 from django.conf import settings
+from .serializers import RateSerializer, CommentSerializer
 
 api_key = settings.API_KEY
 
@@ -21,7 +22,6 @@ api_key = settings.API_KEY
 def get_genre_datas(request):
     url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=ko-KR'
     response = requests.get(url).json()
-
     for genre in response['genres']:
         save_data = {
             'name': genre.get('name')
@@ -35,11 +35,9 @@ def get_genre_datas(request):
 
 @api_view(['GET'])
 def get_movie_datas(request):
-
     for i in range(1, 101):
         url = f'https://api.themoviedb.org/3/movie/top_rated?api_key={api_key}&language=ko-KR&page={i}'  
         response = requests.get(url).json()
-
         movie_list = response.get('results')
         for movie in movie_list:
             if movie.get('release_date', '') and (movie.get('overview') != '' and movie.get('poster_path') != None and movie.get('release_date') != None):
@@ -51,7 +49,6 @@ def get_movie_datas(request):
                     'vote_average': movie['vote_average'],
                     'vote_count' : movie['vote_count'],
                     'poster_path': movie['poster_path'],
-                    
                     # 'video': [],
                     'like_users' : [],            
                 }
@@ -62,49 +59,11 @@ def get_movie_datas(request):
                 movie = Movie.objects.get(pk=movie['id'])
                 for genre in genres:
                     movie.genre_check.add(genre)
-
     return Response(response)
 
 
-
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def movie_list(request):
-    if request.method == 'GET':
-        movies = get_list_or_404(Movie)
-        serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        serializer = MovieSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            # serializer.save()
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-            
-
-@api_view(['GET', 'DELETE', 'PUT'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def movie_detail(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-
-    if request.method == 'GET':
-        serializer = MovieSerializer(movie)
-        return Response(serializer.data)
-    
-    elif request.method == 'DELETE':
-        movie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    elif request.method == 'PUT':
-        serializer = MovieSerializer(movie, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-
-
 @api_view(['POST'])
-def movie_like(request, movie_pk):
+def movie_likes(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieSerializer(movie)
 
@@ -120,37 +79,45 @@ def movie_like(request, movie_pk):
     return Response(serializer.data)
 
 
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def save_rating_and_comment(request, movie_id):
+    try:
+        rating = request.data.get('rating')
+        comment = request.data.get('comment')
+
+        # 영화에 대한 평점 저장
+        movie = Movie.objects.get(pk=movie_id)
+        rate = Rate.objects.create(rate_user=request.user, rate_movie=movie, rate_score=rating)
+
+        # 영화에 대한 코멘트 저장
+        comment = Comment.objects.create(user=request.user, movie=movie, content=comment)
+        comment_serializer = CommentSerializer(comment, many=False)
+        rate_serializer = RateSerializer(rating, many=True)
+        movie_serializer=MovieSerializer(movie)
+        return Response({'message': 'Rating and comment saved successfully.'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        print(e)
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def comment_list(request):
-    # comments = Comment.objects.all()
-    comments = get_list_or_404(Comment)
-    serializer = CommentSerializer(comments, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def comment_create(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    serializer = CommentSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie, user=request.user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+def get_movie_ratings_and_comments(request, movie_id):
+    try:
+        # 특정 영화에 대한 평점 조회
+        rates = Rate.objects.filter(rate_movie_id=movie_id)
+        rate_serializer = RateSerializer(rates, many=True)
 
+        # 특정 영화에 대한 코멘트 조회
+        comments = Comment.objects.filter(movie_id=movie_id)
+        comment_serializer = CommentSerializer(comments, many=True)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def comment_like(request, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
-    serializer = CommentSerializer(comment)
-
-    if comment.like_users.filter(pk=request.user.pk).exists():
-        comment.like_users.remove(request.user)
-    
-    else:
-        comment.like_users.add(request.user)
-    
-    
-    return Response(serializer.data)
+        return Response({
+            'rates': rate_serializer.data,
+            'comments': comment_serializer.data
+        })
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

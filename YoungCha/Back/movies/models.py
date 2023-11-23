@@ -50,19 +50,24 @@ class Movie(models.Model):
 
     
 class Rate(models.Model):
-    rate_user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='user_rated')
+    rate_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_rated')
     rate_movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rate_score = models.FloatField()
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='movie_user'
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='movie_user')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_comments')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    like_users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='like_movie_comments', blank=True,
-    )
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movie_comments', blank=True)
+
+    def like_comment(self, user):
+        self.like_users.add(user)
+
+    def unlike_comment(self, user):
+        self.like_users.remove(user)
+
+    def is_liked_by_user(self, user):
+        return self.like_users.filter(pk=user.pk).exists()
