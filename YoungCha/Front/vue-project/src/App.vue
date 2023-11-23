@@ -92,9 +92,9 @@ var $ = jQuery.noConflict();
 onMounted(() => {
   
   // store.isUser()
-  if (store && store.loginUser) {
+
     console.log(store.loginUser);
-  }
+
   
 })
 
