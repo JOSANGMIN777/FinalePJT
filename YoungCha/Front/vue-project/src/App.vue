@@ -21,7 +21,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
     <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: users.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
-    <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.username}}">Account&nbsp;&nbsp;</RouterLink>
+    
     <RouterLink style="font-size: 24px;" @click.prevent="logOut" :to="{ name: 'home'}">LogOut&nbsp;&nbsp;</RouterLink>
     <!-- <a @click="logOut" href="#" style="font-size: 24px;">
       LogOut
@@ -49,14 +49,14 @@
     </div>
   
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" style="color: black;">
+  <!-- <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" style="color: black;">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
   <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next" style="color: black;">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
-  </a>
+  </a> -->
 </div>
 
 
@@ -224,7 +224,6 @@ footer {
   left: 30%;
 
 }
-
 
  
 
