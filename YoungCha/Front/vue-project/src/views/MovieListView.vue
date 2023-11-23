@@ -1,10 +1,10 @@
 <template>
-  <h1 class="headtitle">Movie Pedia</h1>
+  
      
-<button class="cta" @click="setCategory(null)">전체</button>
+<!-- <button class="cta" @click="setCategory(null)">전체</button>
 <button class="cta" @click="setCategory(12)">모험</button>
 <button class="cta" @click="setCategory(14)">판타지</button>
-
+ -->
 
     <div>
         <div class="drop d-flex justify-content-evenly align-items-center" style="font-weight:bold; margin-top:20px; margin-bottom:20px; border: 1px solid white; background-color: white;">
@@ -17,13 +17,13 @@
             <button type="button" class="dropdown-toggle cta" data-bs-toggle="dropdown" aria-expanded="false">
               장르순
             </button>
-            <ul style="border: 1px solid #e92964;" class="dropdown-menu">
+            <ul style="border: 2px solid  rgb(62, 172, 62);" class="dropdown-menu">
               <li><a class="dropdown-item" @click="sortBtn(12, '모험')">모험</a></li>
               <li><a class="dropdown-item" @click="sortBtn(14, '판타지')">판타지</a></li>
               <li><a class="dropdown-item" @click="sortBtn(16, '애니메이션')">애니메이션</a></li>
               <li><a class="dropdown-item" @click="sortBtn(18, '드라마')">드라마</a></li>
               <li><a class="dropdown-item" @click="sortBtn(27, '공포')">공포</a></li>
-              <li><a class="dropdown-itemtn(80, '범죄')">범죄</a></li>
+              <li><a class="dropdown-item" @click="sortBtn(80, '범죄')">범죄</a></li>
               <li><a class="dropdown-item" @click="sortBtn(28, '액션')">액션</a></li>
               <li><a class="dropdown-item" @click="sortBtn(35, '코미디')">코미디</a></li>
               <li><a class="dropdown-item" @click="sortBtn(36, '역사')">역사</a></li>

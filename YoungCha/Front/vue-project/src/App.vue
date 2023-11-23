@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="!store.isLogIn">
+  <nav v-if="!store.isLogIn" style="border: 4px solid white;" >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -11,7 +11,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'SignUpView'}">SignUp&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'LogInView'}">LogIn&nbsp;&nbsp;</RouterLink>
   </nav>
-  <nav v-if="store.isLogIn">
+  <nav v-if="store.isLogIn"  style="border: 4px solid white;" >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -20,22 +20,51 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'Search' }">Movie Serach&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
-    <RouterLink style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: store.loginUser.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
-    <RouterLink style="font-size: 24px;" :to="{ name: 'account', params: {username: store.loginUser.username}}">Account&nbsp;&nbsp;</RouterLink>
+    <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: users.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
+    <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.username}}">Account&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" @click.prevent="logOut" :to="{ name: 'home'}">LogOut&nbsp;&nbsp;</RouterLink>
     <!-- <a @click="logOut" href="#" style="font-size: 24px;">
       LogOut
     </a> -->
-    
-    
   </nav>
+  
+  
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" style=" width: 800px; height: 400px;" >
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+   
+      <img class="d-block w-100" src="@/assets/polar.jpg" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="@/assets/aven.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="@/assets/dkn.jpg" alt="Third slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="@/assets/hobbit.jpg" alt="fourth slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="@/assets/incep.jpg" alt="fifth slide">
+    </div>
+  
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" style="color: black;">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next" style="color: black;">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
 
   <RouterView />
   <footer>
-    <h4>Copyright ⓒ 2023 YOUNGcha Inc.</h4>
     <p>서비스 이용약관 | 커뮤니티 이용약관 | 개인정보 처리방침 | 법적고지 | 사이트 맵 | 고객센터 | 채용정보 </p>
     <p>주식회사 영차 | 서울특별시 서초구 강남대로 343 신덕빌딩 3층 |
-사업자등록번호 211-88-66013 | 통신판매업 신고번호 제 2019-서울서초-0965호 |
+사업자등록번호 211-88-66013 | 통신판매업 신고번호 제 2023-서울서초-0965호 |
 호스팅 서비스 제공자 아마존웹서비시즈코리아 유한회사</p>
     
     <p>All Rights Reserved.</p>
@@ -56,16 +85,25 @@ import axios from 'axios'
 
 
 const store = useCounterStore()
+const users = store.loginUser 
 const TMDB_KEY = import.meta.env.VITE_TMDB_KEY 
-
+var $ = jQuery.noConflict();
 
 onMounted(() => {
   
   // store.isUser()
-  console.log(store.loginUser)
+  if (store && store.loginUser) {
+    console.log(store.loginUser);
+  }
+  
 })
 
 const logOut = () => {
+
+  console.log('Headers:', {
+    Authorization: `Token ${store.token}`
+  });
+
     axios({
       method: 'post',
       url: `${store.API_URL}/accounts/logout/`,
@@ -130,9 +168,10 @@ body{
 background-color: #FFE4E1;
 }
 .pic {
-width: 66px;
-left: 10px;
-top: 1px;
+width: 60px;
+left: 13px;
+top: 5.5px;
+
 
 }
 
@@ -177,6 +216,14 @@ footer {
 
   text-align: center;
   margin-top: 100px;
+
   
 }
+
+#carouselExampleControls {
+  left: 30%;
+
+}
+ 
+
 </style>
