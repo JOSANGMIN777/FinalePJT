@@ -17,57 +17,26 @@ from django.conf import settings
 api_key = settings.API_KEY
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def save_rating_and_comment(request, movie_id):
-#     if request.method == "POST":
-#         movie = get_object_or_404(Movies, pk=movie_id)
-#         serializer = MovieCommentSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             # serializer.save()
-#             serializer.save(movie=movie, user=request.user)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+@api_view(['GET'])
+def get_genre_datas(request):
+    url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=ko-KR'
+    response = requests.get(url).json()
 
-#         return Response(serializer.data, status=201)  # 새로운 코멘트를 생성한 경우 201 Created 반환
-#     else:
-#         return JsonResponse({"message": "잘못된 요청입니다."}, status=400)
-    
-# class MovieListView(ListAPIView):
-#     queryset = Movies.objects.all()
-#     serializer_class = MovieListSerializer
+    for genre in response['genres']:
+        save_data = {
+            'name': genre.get('name')
+        }
+        serializers = GenreSerializer(data=save_data)
+        if serializers.is_valid(raise_exception=True):
+            serializers.save(id=genre['id'])
+    return Response(response)
 
-# class RandomMovieListView(ListAPIView):
-#     serializer_class = MovieListSerializer
 
-#     def get_queryset(self):
-#         # 랜덤으로 5개의 영화 선택
-#         return random.sample(list(Movies.objects.all()), min(5, Movies.objects.count()))
-    
 
 @api_view(['GET'])
 def get_movie_datas(request):
 
-    # total_data = []
-
-    # genres_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=ko-KR'
-    # genres = request.get(genres_url).json()
-    
-    # genre_list = genres.get('genres')
-
-    # for genre in genre_list:
-    #     fields = {
-    #         'name': genre['name'],
-    #     }
-
-    #     data = {
-    #         "model": "movies.genre",
-    #         "pk": genre['id'],
-    #         "fields": fields,
-    #     }
-
-    #     total_data.append(data)
-
-    for i in range(1, 3):
+    for i in range(1, 101):
         url = f'https://api.themoviedb.org/3/movie/top_rated?api_key={api_key}&language=ko-KR&page={i}'  
         response = requests.get(url).json()
 
@@ -82,21 +51,36 @@ def get_movie_datas(request):
                     'vote_average': movie['vote_average'],
                     'vote_count' : movie['vote_count'],
                     'poster_path': movie['poster_path'],
+                    
                     # 'video': [],
-                    # 'like_users' : [],            
+                    'like_users' : [],            
                 }
-
                 serializer = MovieSaveSerializer(data=fields)
                 if serializer.is_valid(raise_exception=True):
-                    serializer.save(user=request.user)
+                    serializer.save(user=request.user, id=movie['id'])
+                genres = movie.get('genre_ids')
+                movie = Movie.objects.get(pk=movie['id'])
+                for genre in genres:
+                    movie.genre_check.add(genre)
 
-                # movie = Movie.objects.get(pk=movie['id'])
-                # genres = movie['genre_ids']
-                # for genre in genres:
-                #     movie.genres.add(genre)
+
                 
-    sorted_products =  Movie.objects.all()
-    serializer = MovieSaveSerializer(sorted_products, many=True)
+
+    return Response(response)
+
+
+@api_view(['POST'])
+def movie_likes(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = MovieSerializer(movie)
+
+
+    if request.method == 'POST':
+        if movie.like_users.filter(pk=request.user.pk).exists():
+            movie.like_users.remove(request.user)
+
+        else:
+            movie.like_users.add(request.user)
+    
+
     return Response(serializer.data)
-                
-    # return Response(response)
