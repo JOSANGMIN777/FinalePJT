@@ -7,6 +7,8 @@ export const useCounterStore = defineStore('counter', () => {
   const communitys = ref([])
   const comments = ref([])
   const replies = ref([])
+
+  const movieList = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
   const router = useRouter()
@@ -105,10 +107,10 @@ export const useCounterStore = defineStore('counter', () => {
       .then(res => {
         console.log(res)
         token.value = res.data.key
+        router.push({ name: 'home' })
         isUser()
         // console.log
         // username.value = res.
-        router.push({ name: 'home' })
       })
       .catch(err => console.log(err))
   }
@@ -139,11 +141,26 @@ export const useCounterStore = defineStore('counter', () => {
     })
   }
 
+  const getMovieList = () => {
+    axios({
+      method: 'get',
+      url: `${API_URL}/movies/movies/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      }
+    })
+    .then((res) =>{
+      // console.log(res)
+      movieList.value = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 
 
 
 
 
-
-  return { communitys, comments, replies, API_URL, getCommunitys, getComments, getReplies, signUp, logIn, token, isLogIn, loginUser, isUser }
+  return { communitys, comments, replies, API_URL, getCommunitys, getComments, getReplies, signUp, logIn, token, isLogIn, loginUser, isUser, movieList, getMovieList, }
 }, { persist: true })
