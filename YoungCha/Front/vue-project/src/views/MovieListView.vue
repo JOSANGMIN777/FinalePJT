@@ -7,13 +7,13 @@
 -->
 
 <div>
-  <div class="drop d-flex justify-content-end ">
-    <h1 class="headtitle" style="margin-right: 150px;"> Movie Pedia</h1>
+  <h1 class="headtitle"> Movie Pedia</h1>
+  <div class="drop d-flex justify-content-center ">
           <button class="cta" style="padding-right: 200px;" @click="sortBtn(1, '인기순')">인기순</button>
           <button class="cta" style="padding-right: 200px;" @click="sortBtn(2, '최신순')">최신순</button>
           <button class="cta " style="padding-right: 200px;" @click="sortBtn(5, '평점순')">평점순</button>
           <div class="btn-group">
-            <button type="button" style="padding-right: 200px;" class="dropdown-toggle cta" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" style="padding-right: 200px;" class="dropdown-toggle cta" data-bs-toggle="dropdown" aria-expanded="false" >
               장르순
             </button>
             <ul style="border: 2px solid  rgb(62, 172, 62);" class="dropdown-menu">
@@ -67,7 +67,7 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 
-const selectedGenre = ref(null)
+
 
 const router = useRouter()
 const page = ref(1);
@@ -76,10 +76,6 @@ const videos = ref([])
 const currentPage = ref(1)
 const totalPages = ref(1)
 
-// const sortBtnGenre = (genreId, genreName) => {
-//   console.log(`장르 선택: ${ genreName}`);
-//   selectedGenre.value = genreId;
-// };
 
 const scrollToTop = () => {
   window.scrollTo({
@@ -136,7 +132,6 @@ const displayedPages = computed(() => {
 
 
 
-
 </script>
 
 <style scoped>
@@ -156,8 +151,12 @@ const displayedPages = computed(() => {
   max-width: 100%;
   cursor: pointer;
 
-  
 }
+
+.movie:hover{
+    color:  rgb(100, 200, 150);
+}
+
 
 h1 {
   text-align: center;
@@ -272,25 +271,34 @@ width: 4%;
 .drop {
   border: none;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: white;
   font-weight:bold; 
-  margin-top:20px; 
-  margin-bottom:1px;
-  border-bottom: solid 2px white;
-  border-top: solid 2px white;
-  height: 110px;
+
+
+  height: 100px;
   cursor: pointer;
-  padding: 0;
+  
   display: flex;
   justify-content: space-around;
-  
+  align-items: center;
+
   
   
   
 }
 
 .drop button {
-  padding-right: 400px;
+  
+  text-align: center;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  border: none;
+  background-color: white;
+  
 }
+
 
 </style>
