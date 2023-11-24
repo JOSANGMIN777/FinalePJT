@@ -47,4 +47,4 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             extra_fields.append('age')
         model = UserModel
         fields = ('pk', *extra_fields)
-        read_only_fields = ('email', )
+        read_only_fields = ('username', 'email', )

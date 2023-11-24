@@ -45,14 +45,17 @@
           </div>
           
         </div>
-      </div>
-  
-      <br>
-      <div class="page">
-        <button @click="changePage(totalPages[0])" style="width: 7%;">처음으로</button>
-        <button v-for="page in displayedPages" :key="page" @click="changePage(page)" :disabled="currentPage === page">{{ page }}</button>
-      </div>
-      
+
+    </div>
+
+    <br>
+    <div class="page">
+      <button @click="changePage(totalPages[0])" style="width: 7%;">처음으로</button>
+      <button v-for="page in displayedPages" :key="page" @click="changePage(page)" :disabled="currentPage === page">{{ page }}</button>
+    </div>
+    
+    <div>
+
       
       <button class="up" @click="scrollToTop">↑</button>
     </div>
