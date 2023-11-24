@@ -40,10 +40,7 @@
           </div>          
         </div>
       </div>
-      
-  <div>
-    
-    <br><hr>
+          <br><hr>
     <div class="movies-container">
       <div class="movie" v-for="video in videos" :key="video.id" :video="video">
         <img :src="`https://image.tmdb.org/t/p/w500/${video.poster_path}`" alt="포스터" :page="page" :movieId="video.id" class="poster" @click="goToMovieDetail(video.id)"> <h2>{{ video.title }}</h2>
@@ -56,88 +53,100 @@
       <button v-for="page in displayedPages" :key="page" @click="changePage(page)" :disabled="currentPage === page">{{ page }}</button>
     </div>
     
-    
-    <button class="up" @click="scrollToTop">↑</button>
-  </div>
-</template>
-
-<script setup>
-import { onMounted, ref, computed } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
-
-
-const selectedGenre = ref(null)
-
-const router = useRouter()
-const page = ref(1);
-const token = import.meta.env.VITE_TMDB_TOKEN
-const videos = ref([])
-const currentPage = ref(1)
-const totalPages = ref(1)
-
-// const sortBtnGenre = (genreId, genreName) => {
-//   console.log(`장르 선택: ${ genreName}`);
-//   selectedGenre.value = genreId;
-// };
-
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  })
-}
-
-const searchVideo = function(page = 1) {
-  const url = `https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=${page}`
-  const options = {
-    url,
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${token}`
-    }
-  };
-
-  axios(options)
-    .then(res => {
       
-      videos.value = res.data.results
-      currentPage.value = res.data.page
-      totalPages.value = res.data.total_pages
+      <button class="up" @click="scrollToTop">↑</button>
+    </div>
+  </template>
+  
+  <script setup>
+  import { onMounted, ref, computed } from 'vue'
+  import axios from 'axios'
+  import { useRouter } from 'vue-router'
+  
+  
+  
+  
+  const router = useRouter()
+  const page = ref(1);
+  const token = import.meta.env.VITE_TMDB_TOKEN
+  const videos = ref([])
+  const currentPage = ref(1)
+  const totalPages = ref(1)
+  const data = ref([])
+  const Buttons = ref(0)
+  const selectedGenre = ref(null)
+
+  const sortBtn = (w, genre) => {
+    Buttons.value=
+  searchVideo(w, 1)
+  }
+  
+  
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     })
-    .catch(err => console.log(err))
-}
+  }
+  
+  const searchVideo = (Btn, page) => {
+    const genreIds = `${Btn}`; // 여러 장르를 콤마로 구분하여 지정
+    const url = `https://api.themoviedb.org/3/discover/movie?language=ko-KR&page=${page}&with_genres=${genreIds}`;
+    
+    const options = {
+      url,
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    };
+  
 
-const changePage = function(page) {
-  currentPage.value = page
-  searchVideo(page)
-
-}
-
-onMounted(() => {
-  searchVideo()
-  console.log()
-
-})
-
-const goToMovieDetail = function (movieId) {
-  router.push(`/movie/${movieId}`)
-}
-
-const displayedPages = computed(() => {
-  const pagesPerGroup = 10; // 한 그룹당 보여줄 페이지 수
-  const groupNumber = Math.ceil(currentPage.value / pagesPerGroup);
-  const startPage = (groupNumber - 1) * pagesPerGroup + 1;
-  const endPage = Math.min(totalPages.value, startPage + pagesPerGroup - 1);
-
-  return Array.from({ length: endPage - startPage + 2 }, (_, index) => index + startPage);
-})
-
-
-
-
-</script>
+  
+  
+  
+  
+  
+    axios(options)
+      .then(res => {
+        data.value = res.data.results;
+        videos.value = res.data.results;
+        currentPage.value = res.data.page;
+        totalPages.value = res.data.total_pages;
+      })
+      .catch(err => console.log(err))
+  }
+  
+  const changePage = function(page) {
+    currentPage.value = page
+    searchVideo(Buttons.value, page)
+  
+  }
+  
+  onMounted(() => {
+    searchVideo()
+    console.log()
+  
+  })
+  
+  const goToMovieDetail = function (movieId) {
+    router.push(`/movie/${movieId}`)
+  }
+  
+  const displayedPages = computed(() => {
+    const pagesPerGroup = 10; // 한 그룹당 보여줄 페이지 수
+    const groupNumber = Math.ceil(currentPage.value / pagesPerGroup);
+    const startPage = (groupNumber - 1) * pagesPerGroup + 1;
+    const endPage = Math.min(totalPages.value, startPage + pagesPerGroup - 1);
+  
+    return Array.from({ length: endPage - startPage + 2 }, (_, index) => index + startPage);
+  })
+  
+  
+ 
+  </script>
+  
 
 <style scoped>
 
@@ -158,6 +167,11 @@ const displayedPages = computed(() => {
 
   
 }
+
+.movie:hover{
+    color:  rgb(100, 200, 150);
+}
+
 
 h1 {
   text-align: center;
