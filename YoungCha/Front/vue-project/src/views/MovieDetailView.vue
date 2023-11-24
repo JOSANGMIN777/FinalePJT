@@ -63,8 +63,14 @@
         <div class="col-md-3">
             {{ comment.user.nickname }}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             {{ comment.content }}
+        </div>
+        <div class="col-md-3">
+          <form @submit="deleteRatingAndComments">
+            <input type="submit" value="DELETE">
+          </form>
+          
         </div>
     </div>
 </div>
@@ -222,6 +228,21 @@ const getRatingsAndComments = () => {
   });
 };
 
+const deleteRatingAndComments = () => {
+  axios({
+    method: 'delete',
+    url: `${store.API_URL}/movies/getRatingsAndComments/${route.params.movieId}/`,
+    headers: {
+      Authorization: `Token ${store.token}`,
+    }
+  })
+  .then((res) => {
+    console.log(res.data)
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
 
 
 (async () => {
