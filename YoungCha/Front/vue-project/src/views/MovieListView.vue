@@ -34,6 +34,7 @@
             </div>          
           </div>
         </div>
+
       
       <br><hr>
       <div class="movies-container">

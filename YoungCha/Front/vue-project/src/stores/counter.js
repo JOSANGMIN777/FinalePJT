@@ -13,7 +13,7 @@ export const useCounterStore = defineStore('counter', () => {
   const token = ref(null)
   const router = useRouter()
   const loginUser = ref([])
-  
+
 
   // DRF에 Community 조회 요청을 보내는 action
   const getCommunitys = function () {
