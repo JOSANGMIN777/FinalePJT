@@ -35,7 +35,7 @@ def get_genre_datas(request):
 
 @api_view(['GET'])
 def get_movie_datas(request):
-    for i in range(1, 101):
+    for i in range(1, 201):
         url = f'https://api.themoviedb.org/3/movie/top_rated?api_key={api_key}&language=ko-KR&page={i}'  
         response = requests.get(url).json()
         movie_list = response.get('results')
@@ -103,21 +103,28 @@ def save_rating_and_comment(request, movie_id):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def get_movie_ratings_and_comments(request, movie_id):
     try:
-        # 특정 영화에 대한 평점 조회
         rates = Rate.objects.filter(rate_movie_id=movie_id)
-        rate_serializer = RateSerializer(rates, many=True)
-
-        # 특정 영화에 대한 코멘트 조회
         comments = Comment.objects.filter(movie_id=movie_id)
-        comment_serializer = CommentSerializer(comments, many=True)
+        if request.method == 'GET':
+            # 특정 영화에 대한 평점 조회
+            rate_serializer = RateSerializer(rates, many=True)
 
-        return Response({
-            'rates': rate_serializer.data,
-            'comments': comment_serializer.data
-        })
+            # 특정 영화에 대한 코멘트 조회
+            comment_serializer = CommentSerializer(comments, many=True)
+
+            return Response({
+                'rates': rate_serializer.data,
+                'comments': comment_serializer.data
+            })
+        
+        if request.method == 'DELETE':
+            rates.delete()
+            comments.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
