@@ -3,10 +3,7 @@
     <h1 style="color: rgb(50, 150, 80) ;">{{ route.params.nickname }}님의 프로필</h1>
     <br>
     <img src="@/assets/user.jpg" alt="usericon" class="usericon">
-    <br>
-    <button> 
-        <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.nickname}}" >개인정보수정</RouterLink>
-    </button>
+   
      <br>
      <br>
     게시글 수 : {{ filterCommunityLength }}
@@ -32,11 +29,9 @@ import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import {useCounterStore} from '@/stores/counter';
 import {computed} from '@vue/reactivity'
-import AccountView from '@/views/AccountView.vue';
-import { RouterLink, RouterView } from 'vue-router'
 const route = useRoute()
 const store = useCounterStore()
-const users = store.loginUser 
+
 
 const filterCommunity = computed(() => {
     return store.communitys.filter(community => route.params.nickname === community.user.nickname);
@@ -53,6 +48,10 @@ const filterCommunityLength = computed(() => {
 
 
 
+
+onMounted(() => {
+   
+})
 </script>
 
 <style scoped>
@@ -61,6 +60,5 @@ const filterCommunityLength = computed(() => {
   border-radius: 30%;
   border: 5px solid rgb(50, 150, 80);
 }
-
 
 </style>

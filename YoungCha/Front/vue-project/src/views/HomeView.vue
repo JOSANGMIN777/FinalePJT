@@ -9,11 +9,10 @@
     </div>
     <br>
     <br><br>
-    <br>
-    <br>
 
 
-    <div class="movies-container" style="margin-bottom: 500px;">
+
+    <div class="movies-container" style="margin-bottom: 50px;">
       <div class="arrow left" @click="rotateMovies(-1)">&#9665;</div>
 
       <div class="movie" v-for="(movie, index) in randomMovies" :key="movie.id" :style="getMovieStyle(index)">

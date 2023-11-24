@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="!store.isLogIn" style="border-bottom: 4px solid white; border-top: 4px solid white : ;"   >
+  <nav v-if="!store.isLogIn" style="border: 4px solid white;"  >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -11,7 +11,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'SignUpView'}">SignUp&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'LogInView'}">LogIn&nbsp;&nbsp;</RouterLink>
   </nav>
-  <nav v-if="store.isLogIn"  style="border-bottom: 4px solid white; border-top: 4px solid white : ;"  >
+  <nav v-if="store.isLogIn"  style="border: 4px solid white;"  >
     <RouterLink :to="{ name: 'home' }">
       <img src="@/assets/logo.avif" alt="logo" style="position:absolute;" class="pic">
     </RouterLink> 
@@ -21,7 +21,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
     <RouterLink v-if="store.token !== null" style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: users.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
-    
+    <RouterLink v-if="store.token !== null" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.username}}">Account&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" @click.prevent="logOut" :to="{ name: 'home'}">LogOut&nbsp;&nbsp;</RouterLink>
     <!-- <a @click="logOut" href="#" style="font-size: 24px;">
       LogOut
@@ -49,14 +49,14 @@
     </div>
   
   </div>
-  <!-- <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" style="color: black;">
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" style="color: black;">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
   <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next" style="color: black;">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
-  </a> -->
+  </a>
 </div>
 
 
@@ -92,9 +92,9 @@ var $ = jQuery.noConflict();
 onMounted(() => {
   
   // store.isUser()
-
+  if (store && store.loginUser) {
     console.log(store.loginUser);
-
+  }
   
 })
 
@@ -224,6 +224,7 @@ footer {
   left: 30%;
 
 }
+
 
  
 
