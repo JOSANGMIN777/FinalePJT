@@ -4,7 +4,7 @@
     <br><hr>
     <LoginMain/>
     <!-- <button @click="Reroll">새 목록 가져오기</button> -->
-    <div style="text-align: center;">
+    <div class="startBtn" style="text-align: center;">
       <img src="@/assets/start.png" alt="" @click="Reroll" style="width: 20%;">
     </div>
     <br>
@@ -191,6 +191,10 @@ h4 {
   color: yellow;
 }
 
+.startBtn:active{
+    transform: translateY(4px) translateX(4px);
+    box-shadow: gray 0px 0px 0px;
+  }
 </style>
 
 <style>

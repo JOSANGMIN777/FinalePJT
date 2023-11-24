@@ -7,7 +7,7 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'movies' }">Movie List&nbsp;&nbsp;</RouterLink> 
     <RouterLink style="font-size: 24px;" :to="{ name: 'Search' }">Movie Serach&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
-    <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
+    
     <RouterLink style="font-size: 24px;" :to="{ name: 'SignUpView'}">SignUp&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'LogInView'}">LogIn&nbsp;&nbsp;</RouterLink>
   </nav>
@@ -19,10 +19,12 @@
     <RouterLink style="font-size: 24px;" :to="{ name: 'movies' }">Movie List&nbsp;&nbsp;</RouterLink> 
     <RouterLink style="font-size: 24px;" :to="{ name: 'Search' }">Movie Serach&nbsp;&nbsp;</RouterLink>
     <RouterLink style="font-size: 24px;" :to="{ name: 'CommunityView' }">Community&nbsp;&nbsp;</RouterLink>
-    <RouterLink style="font-size: 24px;" :to="{ name: 'Recommend' }">Reviews&nbsp;&nbsp;</RouterLink>
+
     <RouterLink v-if="store.token !== null" style="font-size: 24px;" :to="{ name: 'profile', params: {nickname: users.nickname}}">Profile&nbsp;&nbsp;</RouterLink>
     
+
     <RouterLink style="font-size: 24px;" @click.prevent="store.logOut" :to="{ name: 'home'}">LogOut&nbsp;&nbsp;</RouterLink>
+
     <!-- <a @click="logOut" href="#" style="font-size: 24px;">
       LogOut
     </a> -->

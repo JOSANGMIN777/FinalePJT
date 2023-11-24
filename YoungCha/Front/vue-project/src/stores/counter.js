@@ -13,6 +13,7 @@ export const useCounterStore = defineStore('counter', () => {
   const token = ref(null)
   const router = useRouter()
   const loginUser = ref([])
+  const movieList = ref([])
 
   // DRF에 Community 조회 요청을 보내는 action
   const getCommunitys = function () {
@@ -160,6 +161,7 @@ export const useCounterStore = defineStore('counter', () => {
     })
   }
 
+
   const getMovieList = () => {
     axios({
       method: 'get',
@@ -180,6 +182,7 @@ export const useCounterStore = defineStore('counter', () => {
   const AccountUser = (payload) => {
     const nickname = payload.nickname
     const age = payload.age
+
 
 
     axios({
@@ -225,6 +228,7 @@ export const useCounterStore = defineStore('counter', () => {
       router.push({ name: 'home' })
     })
   }
+
 
 
 
