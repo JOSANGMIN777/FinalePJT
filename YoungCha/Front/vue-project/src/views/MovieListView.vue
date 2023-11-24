@@ -34,8 +34,6 @@
             </div>          
           </div>
         </div>
-        
-    <div>
       
       <br><hr>
       <div class="movies-container">
@@ -162,7 +160,7 @@
   
   }
   
-  .movie:hover{
+  .movie :hover{
       color:  rgb(100, 200, 150);
   }
   
@@ -190,7 +188,6 @@
   margin-bottom: 30px;
   color: black;
   font-style: inherit;
-  
   width: 4%;
   
   }

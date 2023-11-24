@@ -8,7 +8,7 @@
         <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.nickname}}" >개인정보수정</RouterLink>
     </button>
       <br>
-      <button>
+      <button style="background-color: black; border: 1px solid black;">
       <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'PasswordChange'}">
         비밀번호 변경
       </RouterLink>
@@ -68,6 +68,10 @@
             </div>          
           </div>
         </div>
+      <hr>
+        <button style="background-color: black; border: 1px solid black;" > 
+        <RouterLink v-if="store.loginUser" style="font-size: 34px;" :to="{ name:'movies'}" >>>> [ 내 취향대로 추천받기 ] </RouterLink>
+    </button>
         </form>
         <hr>
     </div>
