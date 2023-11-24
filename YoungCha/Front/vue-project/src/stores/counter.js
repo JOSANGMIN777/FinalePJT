@@ -7,6 +7,8 @@ export const useCounterStore = defineStore('counter', () => {
   const communitys = ref([])
   const comments = ref([])
   const replies = ref([])
+
+  const movieList = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
   const router = useRouter()
@@ -105,14 +107,33 @@ export const useCounterStore = defineStore('counter', () => {
       .then(res => {
         console.log(res)
         token.value = res.data.key
+        router.push({ name: 'home' })
         isUser()
         // console.log
         // username.value = res.
-        router.push({ name: 'home' })
       })
       .catch(err => console.log(err))
   }
 
+  const logOut = () => {
+
+  
+      axios({
+        method: 'post',
+        url: `${API_URL}/accounts/logout/`,
+        headers: {
+          Authorization: `Token ${token.value}`
+        }
+      })
+      .then(res => {
+        token.value = null
+        loginUser.value = null
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
 
   const isLogIn = computed(() => {
     if (token.value === null) {
@@ -139,11 +160,74 @@ export const useCounterStore = defineStore('counter', () => {
     })
   }
 
+  const getMovieList = () => {
+    axios({
+      method: 'get',
+      url: `${API_URL}/movies/movies/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      }
+    })
+    .then((res) =>{
+      // console.log(res)
+      movieList.value = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const AccountUser = (payload) => {
+    const nickname = payload.nickname
+    const age = payload.age
+
+
+    axios({
+      method: 'put',
+      url: `${API_URL}/accounts/user/`,
+      data: {
+        nickname,
+        age
+      },
+      headers: {
+        Authorization: `Token ${token.value}`
+      }
+    })
+    .then(res => {
+      isUser()
+      router.push({ name: 'profile', params:{nickname: payload.nickname}})
+      
+      
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+
+  const PasswordChange = (payload) => {
+    const new_password1 = payload.new_password1
+    const new_password2 = payload.new_password2
+
+    axios({
+      method: 'post',
+      url: `${API_URL}/accounts/password/change/`,
+      data: {
+        new_password1,
+        new_password2,
+      },
+      headers: {
+        Authorization: `Token ${token.value}`
+      }
+    })
+    .then(res => {
+      logOut()
+      router.push({ name: 'home' })
+    })
+  }
 
 
 
 
-
-
-  return { communitys, comments, replies, API_URL, getCommunitys, getComments, getReplies, signUp, logIn, token, isLogIn, loginUser, isUser }
+  return { communitys, comments, replies, API_URL, getCommunitys, getComments, getReplies, signUp, logIn, logOut, token, isLogIn, loginUser, isUser, movieList, getMovieList, AccountUser, PasswordChange,}
 }, { persist: true })

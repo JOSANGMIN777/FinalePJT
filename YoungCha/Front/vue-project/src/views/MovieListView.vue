@@ -53,7 +53,7 @@
       <button v-for="page in displayedPages" :key="page" @click="changePage(page)" :disabled="currentPage === page">{{ page }}</button>
     </div>
     
-      
+    <div>
       <button class="up" @click="scrollToTop">↑</button>
     </div>
   </template>
