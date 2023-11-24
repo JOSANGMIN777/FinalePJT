@@ -73,8 +73,10 @@
   const currentPage = ref(1)
   const totalPages = ref(1)
   const data = ref([])
+  const Buttons = ref(0)
   const sortBtn = (w, genre) => {
-    searchVideo(w)
+    Buttons.value=
+  searchVideo(w, 1)
   }
   
   
@@ -85,7 +87,7 @@
     })
   }
   
-  const searchVideo = (page, Btn) => {
+  const searchVideo = (Btn, page) => {
     const genreIds = `${Btn}`; // 여러 장르를 콤마로 구분하여 지정
     const url = `https://api.themoviedb.org/3/discover/movie?language=ko-KR&page=${page}&with_genres=${genreIds}`;
     
@@ -110,7 +112,7 @@
   
   const changePage = function(page) {
     currentPage.value = page
-    searchVideo(page)
+    searchVideo(Buttons.value, page)
   
   }
   

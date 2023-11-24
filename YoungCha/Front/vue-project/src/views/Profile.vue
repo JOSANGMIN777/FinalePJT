@@ -4,7 +4,7 @@
     <br>
     <img src="@/assets/user.jpg" alt="usericon" class="usericon">
     <br>
-    <button> 
+    <button style="background-color: black; border: 1px solid black;" > 
         <RouterLink v-if="store.loginUser" style="font-size: 24px;" :to="{ name: 'account', params: {username: users.nickname}}" >개인정보수정</RouterLink>
     </button>
      <br>
