@@ -82,7 +82,7 @@
     :page="page"
     >
 
-    <button class="btn-go-back" >돌아가기</button>
+    <button class="btn-go-back" >영화 둘러보기</button>
   </RouterLink>
 
 
