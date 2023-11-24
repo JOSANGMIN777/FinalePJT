@@ -11,6 +11,7 @@ export const useCounterStore = defineStore('counter', () => {
   const token = ref(null)
   const router = useRouter()
   const loginUser = ref([])
+  const movieList = ref([])
 
   // DRF에 Community 조회 요청을 보내는 action
   const getCommunitys = function () {
@@ -139,11 +140,25 @@ export const useCounterStore = defineStore('counter', () => {
     })
   }
 
+ const getMovieList = () => {
+  axios({
+    method: 'get',
+    url: `${API_URL}/movies/movies`,
+    headers: {
+      Authorization: `Token ${token.value}`
+    }
+  })
+  .then((res) => {
+    movieList.value = res.data
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+ }
 
 
 
 
 
-
-  return { communitys, comments, replies, API_URL, getCommunitys, getComments, getReplies, signUp, logIn, token, isLogIn, loginUser, isUser }
+  return { communitys, comments, replies, API_URL, getCommunitys, getComments, getReplies, signUp, logIn, token, isLogIn, loginUser, isUser, getMovieList }
 }, { persist: true })
